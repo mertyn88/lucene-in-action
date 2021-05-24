@@ -1,0 +1,51 @@
+buildscript {
+    ext {
+        // java version
+        javaVersion = JavaVersion.VERSION_11
+        // lucene version
+        luceneVersion = "8.6.2"
+        // lombok version
+        lombokVersion = "1.18.8"
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+wrapper {
+    gradleVersion = "5.6.4"
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+// compile encoding 설정.
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+// 공통 dependency 정의.
+dependencies {
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+    implementation("org.apache.lucene:lucene-core:${luceneVersion}")
+    implementation("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
+    implementation("org.apache.lucene:lucene-codecs:${luceneVersion}")
+    implementation("org.apache.lucene:lucene-queryparser:${luceneVersion}")
+
+    //jackson
+    compile("com.fasterxml.jackson.core:jackson-core:2.8.8")
+    compile("com.fasterxml.jackson.core:jackson-annotations:2.8.8")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.8.8")
+}
+
+// repositories
+repositories {
+    mavenCentral()
+    jcenter()
+}

@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -47,9 +51,10 @@ public class Indexer {
 
     public Document getDocument(File file) throws Exception {
         Document doc = new Document();
-        //변경코드 new Field() -> new TextField()
+        //변경코드 new Field() -> new TextField() -> new TextField로 색인시 검색결과를 가져올 수 없다!! un-store하다..
         //변경코드 Field.Index.NOT_ANALYZED -> 삭제됨
-        doc.add(new TextField("contents", new FileReader(file)));
+        doc.add(new TextField("contentsFile", new FileReader(file)));
+        doc.add(new StringField("contentsString", FileUtils.readFileToString(file, StandardCharsets.UTF_8), Field.Store.YES));
         doc.add(new StringField("filename", file.getName(), Field.Store.YES));
 
         return doc;

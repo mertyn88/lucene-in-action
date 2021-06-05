@@ -33,6 +33,7 @@ public class Searcher {
         for(ScoreDoc scoreDoc : hits.scoreDocs){
             Document doc = indexSearcher.doc(scoreDoc.doc);
 
+            System.out.println(doc.get("id"));
             System.out.println(doc.get("contentsFile"));
             System.out.println(doc.get("contentsString"));
             System.out.println(doc.get("filename"));
